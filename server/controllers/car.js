@@ -40,7 +40,19 @@ const findAll = async (req, res) => {
   const { limit, offset } = getPagination(currentPage, itemsPerPage);
 
 	try {
-			const results =  await Car.paginate(condition, { offset, limit });
+			const options = {
+				populate: [
+					{
+						path: "comments",
+						options: { sort: { createdAt: -1 }},
+						populate : {path: "user"}
+					}
+			] ,
+				offset,
+				limit
+			}
+
+			const results =  await Car.paginate(condition, options);
 			return  res.send({
 												totalItems: results.totalDocs,
 												items: results.docs,
@@ -55,5 +67,26 @@ const findAll = async (req, res) => {
 	}
 };
 
+const getCarById = async (req, res, next, id) => {
+	try {
+		const car = await Car.findById(id)
+			.populate('comments')
+			.exec();
+
+		if (!car) {
+			return res.status(400).json({
+				error: true,
+				message: 'Id not found',
+			});
+		}
+		
+		req.car = car;
+		next();
+	} catch (error) {
+			return res.status(400).json(error);
+	}
+}
+
 exports.create = create;
 exports.findAll = findAll;
+exports.getCarById = getCarById;

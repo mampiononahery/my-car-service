@@ -56,3 +56,6 @@ label {
   max-width: 350px !important;
   padding: 40px 40px;
 }
+.input-form-control {
+  margin-bottom: 10px;
+}

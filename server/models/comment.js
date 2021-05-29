@@ -12,6 +12,7 @@ const commentSchema = Schema({
 commentSchema.method("toJSON", function() {
 	const { __v, _id, ...object } = this.toObject();
 	object.id = _id;
+	object.user1 = "test";
 	return object;
 });
 

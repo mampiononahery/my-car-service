@@ -1,4 +1,6 @@
 const signUp = require("./signUp");
+const authJwt = require("./authJwt");
 module.exports = {
-  signUp
+  signUp,
+  authJwt
 };
