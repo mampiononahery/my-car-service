@@ -6,6 +6,9 @@ const dbConfig = require("./config/db.config");
 
 const app = express();
 
+// cors
+app.use(cors());
+
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
@@ -67,8 +70,7 @@ function initRole() {
 
 // api  
 require("./routes/auth.routes")(app);
-
-
+require("./routes/car.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

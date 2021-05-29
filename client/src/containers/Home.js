@@ -1,10 +1,12 @@
 import React from 'react';
 
+import CarsList from './cars/CarsList';
+
 const home = (props) => {
 	return (
-		<div>
-			<h1>Liste des voitures</h1>
-		</div>
+		<>
+			<CarsList />
+		</>
 	);
 }
 export default home;

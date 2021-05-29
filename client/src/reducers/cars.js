@@ -1,15 +1,21 @@
+import {
+	CARS_LOADED,
+	CARS_UPDATED
+} from '../actions/types';
+import { getData } from './index';
+
 const initialState = {
 	cars: []
 }
 
-const carsReducer = (state = initialState, action) => {
+export default function carsReducer(state = initialState, action) {
 	switch (action.type) {
-		case 'CARS_LOADED':
+		case CARS_LOADED:
 			return {
 				...state,
 				cars: action.cars,
 			};
-		case 'CARS_UPDATED':
+		case CARS_UPDATED:
 			return {
 				...state,
 				cars: action.cars,
@@ -19,4 +25,13 @@ const carsReducer = (state = initialState, action) => {
 	}
 }
 
-export default carsReducer;
+/**
+ * retrieve cars in state
+ * @param {*} state 
+ * @param {*} errorIfNotFound 
+ * @returns 
+ */
+export function getCars(state, errorIfNotFound = false) {
+	return getData(state, 'cars.cars', errorIfNotFound);
+}
+
