@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 
 // connect to mongoDb 
 const db = require("./models");
-const Role = db.role;
+
 db.mongoose
   .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
     useNewUrlParser: true,
@@ -31,8 +31,10 @@ db.mongoose
   })
   .then(() => {
     console.log("Successfully connect to MongoDB.");
-		// create new role 
+		// init data test
     initRole();
+    initUserAdmin();
+    initCars();
   })
   .catch(err => {
     console.error("Connection error", err);
@@ -40,8 +42,14 @@ db.mongoose
   });
 
 
-// init data 
+//--------------------------------------------------------------//
+//-------------------- init data for test ---------------------//
+//------------------------------------------------------------// 
+const Role = db.role;
+const Car = db.car;
+const User = db.user;
 
+// create role 
 function initRole() {
   Role.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
@@ -67,6 +75,75 @@ function initRole() {
     }
   });
 }
+
+const bcrypt = require("bcryptjs");
+function initUserAdmin() {
+  User.estimatedDocumentCount((err, count) => {
+    if (!err && count === 0) {
+      new User({
+        username: 'admin',
+        email: 'admin@admin.com',
+        password: bcrypt.hashSync('admin1234', 8)
+      }).save((err, user) => {
+          if (!err) {
+              Role.findOne({ name: "admin" }, (err, role) => {
+                if(!err) {
+                  user.roles = [role._id];
+                  user.save(err => {
+                    if (!err) {
+                      console.log("admin was registered successfully!");
+                    }
+                  });
+                }
+              
+            });
+          }
+      });
+    }
+  });
+}
+
+// create cars
+function initCars() {
+  Car.estimatedDocumentCount((err, count) => {
+    if (!err && count === 0) {
+       const car = new Car ({
+          name: "Citroen C4 1.7 Blue HDi",
+          description: "Feux xénons - Sièges cuir/tissu - Jantes Alu",
+          mark:"Citroen",
+          year:"2020",
+          carburant:"Diesel",
+          price:1500
+       });
+       car.save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+
+        for ( let i = 0; i< 7; i ++ ) { 
+            new Car ({
+              name: "Renault Clio- "+i,
+              description: "Sièges tissu - Verrouillage électrique des portes - Climatisation manuelle",
+              mark:"Citroen",
+              year:"2020",
+              carburant:"Diesel",
+              price:(1500+i)*2
+          }).save(err => {
+            if (err) {
+              console.log("error", err);
+            }
+          });
+        }
+
+        console.log("added cars in collection");
+      });
+       
+      
+    }
+  });
+
+}
+
 
 // api  
 require("./routes/auth.routes")(app);

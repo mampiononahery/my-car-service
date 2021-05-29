@@ -7,6 +7,6 @@ export const getDateDuration = (date) => moment(date).fromNow();
  * get user in localStorage
  * @returns 
  */
-export const getUser = () => {
+export const getUserInStorage = () => {
 	return JSON.parse(localStorage.getItem('user'));
 }

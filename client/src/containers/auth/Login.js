@@ -1,14 +1,17 @@
 import React, { useState, useRef } from "react";
 import { createUseStyles } from 'react-jss';
 import { Card } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { useHistory } from "react-router-dom";
 import Form from "react-validation/build/form";
 import BoostraForm  from "react-bootstrap/Form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
-import { login } from '../../actions/auth';
+import { login as signin } from '../../actions/auth';
 import { requiredFields, validEmail } from '../../utils/formUtils';
+import { getCurrentUser } from '../../reducers/user';
 
 
 
@@ -53,6 +56,15 @@ const Login = (props) => {
 	// history
 	const history = useHistory();
 
+	// user in store 
+	const user = useSelector(getCurrentUser);
+	if (user) {
+		history.push("/");
+	} 
+
+	// dispatch 
+	const dispatch = useDispatch();
+
   const onChangeEmail = (e) => {
     const email = e.target.value;
     setEmail(email);
@@ -63,7 +75,7 @@ const Login = (props) => {
     setPassword(password);
   };
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     setMessage("");
     setLoading(true);
@@ -71,13 +83,16 @@ const Login = (props) => {
     form.current.validateAll();
 		// run login
     if (checkBtn.current.context._errors.length === 0) {
-		 	const result = await login(email, password);
-			 setLoading(false);
-			 if (!result.success) {
-				setMessage(result.message);
-				return;
-			 }
-			 history.push("/");
+				setLoading(false);
+				dispatch(signin(email, password));
+
+		 	// const result = await login(email, password);
+			//  setLoading(false);
+			//  if (!result.success) {
+			// 	setMessage(result.message);
+			// 	return;
+			//  }
+			//  history.push("/");
     } else {
       setLoading(false);
     }

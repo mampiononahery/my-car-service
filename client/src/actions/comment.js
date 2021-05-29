@@ -1,3 +1,4 @@
+import { fill, findIndex } from 'lodash';
 import CommentService from '../services/commentService';
 import { CARS_UPDATED } from './types';
 
@@ -12,10 +13,19 @@ export const createComment = (carId, text) => {
 			 	const cars = getCars(getState());
 				const result = await CommentService.create(carId, text);
 				const newCar = result.data;
+				const oldItems = cars.items;
 
+				// update store 
+				// update old car with this new comment
+				const index = findIndex(oldItems, car => car.id === newCar.id );
+				if (index !== -1) {
+					// update oldItems
+					fill(oldItems, newCar, index, index+1)
+				}
+				// dispatch store with new  comment
 				dispatch({
 					type: CARS_UPDATED,
-					cars: {...cars, items: [newCar, ...cars.items]}
+					cars: {...cars, items: oldItems}
 				});
 
 		 } catch (error) {

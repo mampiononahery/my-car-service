@@ -59,3 +59,8 @@ label {
 .input-form-control {
   margin-bottom: 10px;
 }
+
+.flexRow {
+  display: flex;
+  align-items: center;
+}

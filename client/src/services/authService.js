@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../constants';
-import { getUser } from '../utils/utils';
+import { getUserInStorage } from '../utils/utils';
 
 /**
  * create new user 
@@ -21,26 +21,19 @@ const login = async (email, password) => {
 		if (result.data.accessToken) {
 				localStorage.setItem("user", JSON.stringify(result.data));
 		}
-		return result;
+		return result.data;
 }
 
 /**
  * get current user in local storage
  * @returns 
  */
-const currentUser = () => {
-	return getUser();
+const currentUserInStorage = () => {
+	return getUserInStorage();
 }
-
-/**
- * logout to app
- */
-const logout = () => {
-  localStorage.removeItem("user");
-};
 
 export default {
 	register,
 	login,
-	currentUser
+	currentUserInStorage
 }

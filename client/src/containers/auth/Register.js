@@ -1,12 +1,14 @@
 import React, { useState, useRef } from "react";
 import { createUseStyles } from 'react-jss';
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import { requiredFields, validEmail, validUsername, validPassword } from '../../utils/formUtils';
 import { register } from '../../actions/auth';
+import { getCurrentUser } from '../../reducers/user';
 
 const useStyles = createUseStyles((theme) => ({
 	container: {
@@ -23,6 +25,15 @@ const Register = (props) => {
 
 	// history
 	const history = useHistory();
+
+	// dispatch 
+	const dispatch = useDispatch();
+
+	// user in store 
+	const user = useSelector(getCurrentUser);
+	if (user) {
+		history.push("/");
+	} 
 
   const form = useRef();
   const checkBtn = useRef();
@@ -56,16 +67,7 @@ const Register = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-
-			const result = await register({username, email, password});
-			console.log('register', result);
-			if (!result.success) {
-				setMessage(result.message);
-				return;
-			}
-
-			 // redirect to home
-			 history.push("/");
+			dispatch(register({username, email, password}))
     }
   };
 
