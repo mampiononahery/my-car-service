@@ -7,6 +7,10 @@ const useStyles = createUseStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		width: 160
+	},
+	title: {
+		display: 'flex',
+		justifyContent: 'space-between'
 	}
 }));
 
@@ -18,7 +22,10 @@ const Car = (props) => {
 		<Card style={{width: 500, margin: 15 }}>
 			<Card.Img variant="top" src=" https://www.largus.fr/images/images/volskwagen-crafter-2017-17.jpg?width=612&quality=80" />
 			<Card.Body>
-				<Card.Title>{car.name}</Card.Title>
+				<div className={classes.title}>
+					<Card.Title>{car.name} </Card.Title>
+					<Card.Title>Prix: {car.price} €</Card.Title>
+				</div>
 				<Card.Text>
 					{car.description}
 				</Card.Text>

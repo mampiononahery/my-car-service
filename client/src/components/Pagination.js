@@ -5,6 +5,7 @@ const Pagination = (props) => {
 
 		const { totalPages, currentPage,  onClicPage } = props;
 
+		// render items page
 		const renderPaginationItems = () => {
 			const items = [];
 			for (let i = 0; i< totalPages; i++) {
