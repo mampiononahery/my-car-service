@@ -1,4 +1,25 @@
 import AuthService from '../services/authService';
+/**
+ * 
+ * @param {*} values 
+ * @returns 
+ */
+export const register = async (values) => {
+		const result = {success: true};
+		try {
+			const newUser = {...values, roles: ['user']}
+			await AuthService.register(newUser);
+			await login(newUser.email, newUser.password);
+		} catch (error) {
+			result.success = false;
+			result.message = (error.response &&
+				error.response.data &&
+				error.response.data.message) ||
+				error.message ||
+				error.toString();
+		}
+		return result;
+}
 
 /**
  * login to app 

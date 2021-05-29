@@ -1,10 +1,12 @@
 import React, { useState, useRef } from "react";
 import { createUseStyles } from 'react-jss';
+import { useHistory } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import { requiredFields, validEmail, validUsername, validPassword } from '../../utils/formUtils';
+import { register } from '../../actions/auth';
 
 const useStyles = createUseStyles((theme) => ({
 	container: {
@@ -18,6 +20,9 @@ const useStyles = createUseStyles((theme) => ({
 const Register = (props) => {
 	// classes
 	const classes = useStyles();
+
+	// history
+	const history = useHistory();
 
   const form = useRef();
   const checkBtn = useRef();
@@ -43,32 +48,24 @@ const Register = (props) => {
     setPassword(password);
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-
     setMessage("");
     setSuccessful(false);
 
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      // AuthService.register(username, email, password).then(
-      //   (response) => {
-      //     setMessage(response.data.message);
-      //     setSuccessful(true);
-      //   },
-      //   (error) => {
-      //     const resMessage =
-      //       (error.response &&
-      //         error.response.data &&
-      //         error.response.data.message) ||
-      //       error.message ||
-      //       error.toString();
 
-      //     setMessage(resMessage);
-      //     setSuccessful(false);
-      //   }
-      // );
+			const result = await register({username, email, password});
+			console.log('register', result);
+			if (!result.success) {
+				setMessage(result.message);
+				return;
+			}
+
+			 // redirect to home
+			 history.push("/");
     }
   };
 

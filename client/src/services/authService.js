@@ -2,6 +2,15 @@ import axios from 'axios';
 import { API_URL } from '../constants';
 
 /**
+ * create new user 
+ * @param {*} values 
+ */
+const register = async (values) => {
+	
+	return await axios.post(API_URL + "/auth/signup", values);
+}
+
+/**
  * login
  * @param {*} email 
  * @param {*} password 
@@ -31,6 +40,7 @@ const logout = () => {
 };
 
 export default {
+	register,
 	login,
 	currentUser
 }
