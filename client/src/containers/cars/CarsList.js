@@ -41,9 +41,6 @@ const CarsList = () => {
 					{ cars.items && cars.items.map((car, index) => (
 						<Car car={car} key={index} />
 					))}
-					{ cars.items && cars.items.map((car, index) => (
-						<Car car={car} key={index} />
-					))}
 				</div>
 				<Pagination 
 					totalPages={cars.totalPages && cars.totalPages}
