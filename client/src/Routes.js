@@ -2,6 +2,7 @@ import { Switch, Route } from "react-router-dom";
 import Home from './containers/Home';
 import Login from './containers/auth/Login';
 import Register from './containers/auth/Register';
+import AddCar from './containers/cars/AddCar';
 
 const Routes = (props) => {
 	return (
@@ -9,6 +10,7 @@ const Routes = (props) => {
 			<Route exact path={["/", "/cars"]} component={Home} />
 			<Route exact path="/login" component={Login} />
 			<Route exact path="/signup" component={Register} />
+			<Route exact path="/car" component={AddCar} />
     </Switch>
 	);
 }

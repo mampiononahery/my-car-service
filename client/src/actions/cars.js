@@ -18,3 +18,17 @@ export const retrieveCars = (currentPage=0) => {
 			}
 	}
 }
+
+export const createCar = (data) => {
+	return async (dispatch) => {
+		try	{
+			const res = await CarService.create(data);
+					// dispatch({
+					// 	type: CARS_LOADED,
+					// 	cars: res.data,
+					// });
+			}	catch(error)	{
+					console.log(error);
+			}
+	}
+}

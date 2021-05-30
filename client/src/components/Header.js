@@ -32,14 +32,14 @@ const Header = (props) => {
 
 	return (
 		<Navbar bg="light" expand="lg">
-			<Navbar.Brand href="#home">My car service</Navbar.Brand>
+			<Navbar.Brand href="#">My car service</Navbar.Brand>
 			<Navbar.Toggle aria-controls="basic-navbar-nav" />
 			<Navbar.Collapse id="basic-navbar-nav">
 				<Nav className="mr-auto">
 					<Nav.Link href="/">Home</Nav.Link>
 
 					{/* only admin can add a car */}
-					{ isAdmin && <Nav.Link href="/add-car">Ajout de voiture</Nav.Link> } 
+					{ isAdmin && <Link to={"/car"} className="nav-link">Ajout de voiture</Link> } 
 				</Nav>
 			</Navbar.Collapse>
 			<div className="navbar-nav ml-auto">

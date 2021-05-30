@@ -1,4 +1,5 @@
 import axios from 'axios';
+import authHeader from './authHeader';
 
 import { API_URL, ITEMS_PER_PAGES } from '../constants';
 
@@ -16,8 +17,16 @@ const getAll = (currentPage=0) => {
   return axios.get(API_URL + "/cars",dataParams);
 };
 
+const create = (data) => {
+		// get session token
+		return axios.post(API_URL + '/cars', data, { headers: authHeader()} );
+	
+}
+
+
 const CarService = {
-	getAll
+	getAll,
+	create
 }
 
 export default CarService;
