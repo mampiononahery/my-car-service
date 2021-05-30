@@ -33,3 +33,29 @@ export const createComment = (carId, text) => {
 		 }
 	}
 }
+
+export const deleteComment = (car, commentId) => {
+		return async (dispatch, getState) => {
+				try {
+				
+						await CommentService.remove(car.id, commentId);
+						const cars = getCars(getState());
+						const oldItems = cars.items;
+						const index = findIndex(oldItems, c => c.id === car.id );
+
+						// remove this comment  in comments car 
+						const newComments = car.comments.filter((com) => com._id !== commentId);
+						car.comments = newComments;
+						fill(oldItems, car, index, index+1);
+
+						// dispatch store with new  comment
+						dispatch({
+							type: CARS_UPDATED,
+							cars: {...cars, items: oldItems}
+						});
+
+				} catch (error) {
+						console.log(error);
+				}
+		}
+}

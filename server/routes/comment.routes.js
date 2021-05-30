@@ -11,5 +11,8 @@ module.exports = app => {
 	// create a new comment
 	 router.post("/cars/:carId/comment", [authJwt.verifyToken], commentController.create);
 
+	// delete comment
+	 router.delete('/cars/:carId/comment/:commentId', [authJwt.verifyToken], commentController.remove);
+
 	 app.use("/api", router);
 }

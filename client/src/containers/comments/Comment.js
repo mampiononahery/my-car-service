@@ -2,6 +2,7 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 
 import { getDateDuration } from '../../utils/utils';
+import { isAdmin } from '../../actions/auth';
 
 const useStyles = createUseStyles((theme) => ({
 	containerComment: {
@@ -26,9 +27,14 @@ const useStyles = createUseStyles((theme) => ({
 
 const Comment = (props) => {
 
-	const { item } = props;
+	const { item, currentUser, onDelete } = props;
 
 	const classes = useStyles();
+	const _onDelete = (e, item) => {
+		e.preventDefault();
+		e.stopPropagation();
+		onDelete(item);
+	} 
 
 	return (
 		<div className={classes.containerComment}>
@@ -40,6 +46,10 @@ const Comment = (props) => {
 					<span className={classes.user}>{item.user.username}</span> - {getDateDuration(item.createdAt)} 
 				</div>
 				<p>{item.text}</p>
+			</div>
+			<div>
+				{/* admin or user of comment only a access to delete */}
+				{((currentUser && item.user._id === currentUser.id ) || isAdmin())  && <a onClick={(e) => _onDelete(e, item)} href="#">delete</a> }
 			</div>
 		</div>
 	);

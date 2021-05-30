@@ -5,8 +5,12 @@ const { authJwt } = require("../middlewares");
 module.exports = app => {
 	const router = express.Router();
 
-	// create a new car
-	 router.post("/", [authJwt.verifyToken], carController.create);
+	//-----------------------------------------------------------------------------//
+	//--------------------------- create car --------------------------------------//
+	//---------------------------------------------------------------------------- //
+
+	// admin only has the access to create a car
+	 router.post("/", [authJwt.verifyToken, authJwt.isAdmin], carController.create);
 
 	// Retrieve all cars
 	router.get("/", carController.findAll);

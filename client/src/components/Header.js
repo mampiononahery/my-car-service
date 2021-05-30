@@ -1,34 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
-import { Navbar, Nav, Badge } from 'react-bootstrap';
-import { findIndex } from 'lodash';
+import { Navbar, Nav } from 'react-bootstrap';
+import { isAdmin } from '../actions/auth';
 
-import { ADMIN_ROLE } from '../constants';
 
 
 
 const Header = (props) => {
 	const { user, onLogout } = props;
 
-	const [isAdmin, setIsAdmin] = useState(false);
-
-	useEffect(() => {
-		// check role for user connected
-		if (user) {
-			const roles = user.roles;
-			const index = findIndex(roles, r => r === ADMIN_ROLE);
-			if (index !== -1 ) {
-				setIsAdmin(true);
-			}
-		}
-	}, [user]);
-
+	// logout to app
 	const _logout = (e) => {
 		onLogout();
 		e.preventDefault();
 		e.stopPropagation();
 	}
-
 
 	return (
 		<Navbar bg="light" expand="lg">
@@ -39,7 +25,7 @@ const Header = (props) => {
 					<Nav.Link href="/">Home</Nav.Link>
 
 					{/* only admin can add a car */}
-					{ isAdmin && <Link to={"/car"} className="nav-link">Ajout de voiture</Link> } 
+					{ isAdmin() && <Link to={"/car"} className="nav-link">Ajout de voiture</Link> } 
 				</Nav>
 			</Navbar.Collapse>
 			<div className="navbar-nav ml-auto">

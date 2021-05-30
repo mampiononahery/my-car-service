@@ -1,5 +1,7 @@
 import AuthService from '../services/authService';
+import { findIndex } from 'lodash';
 import { USER_LOADED, USER_DELETED } from './types';
+import { ADMIN_ROLE } from '../constants';
 /**
  * 
  * @param {*} values 
@@ -49,6 +51,19 @@ export const loginSuccess = () => {
  */
 export function retrieveUserFromLocalStorage() {
 	return AuthService.currentUserInStorage();
+}
+/**
+ * check if user is administrator
+ * @returns 
+ */
+export  function isAdmin() {
+	const user = retrieveUserFromLocalStorage();
+
+	if (!user) return false;
+	const roles = user.roles;
+	const index = findIndex(roles, r => r === ADMIN_ROLE);
+	return index !== -1;
+
 }
 
 export function logout() {

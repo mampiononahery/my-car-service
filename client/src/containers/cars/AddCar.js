@@ -46,8 +46,6 @@ const AddCar = (props) => {
 					<label>image</label>
 					<input className="form-control"  {...register("image")} />
 				</div>
-			
-				
 				<Button variant="outline-primary" type="submit">Ajouter </Button>
 			</form >
 	

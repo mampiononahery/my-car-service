@@ -37,4 +37,20 @@ const create = async (req, res) => {
 	}
 }
 
+const remove = async (req, res) => {
+  try {
+    const car = req.car;
+    // const user = req.user;
+    const { commentId } = req.params;
+    const result = await Car.findByIdAndUpdate(car._id, { $pull: { comments: { _id: commentId } } }, { new: true })
+        .populate('comments.postedBy')
+        .exec();
+
+    res.status(200).json(result);
+  } catch(error) {
+    res.status(400).json(error);
+  }
+}
+
 exports.create = create;
+exports.remove = remove;

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 
 import { getCurrentUser } from '../../reducers/user';
-import { createComment } from '../../actions/comment';
+import { createComment, deleteComment } from '../../actions/comment';
 
 import CommentForm from './CommentForm';
 import Comment from './Comment';
@@ -15,8 +15,14 @@ const CommentsList = (props) => {
 
 	const currentUser = useSelector(getCurrentUser);
 
+	// handle create comment
 	const _createComment = (text) => {
 		dispatch(createComment(car.id, text));
+	}
+
+	// handle delete comment
+	const _deleteComment = (comment) => {
+		dispatch(deleteComment(car, comment._id));
 	}
 
 	const renderInfoBtnCom = () => {
@@ -36,7 +42,13 @@ const CommentsList = (props) => {
 			 { !currentUser && 	renderInfoBtnCom() }
 
 			 {
-				 car.comments.map((comment, index) => (<Comment item={comment} key={index} />))
+				 car.comments.map((comment, index) => (
+				 	<Comment 
+					 	item={comment} 
+						key={index}
+						onDelete={_deleteComment}
+						currentUser={currentUser} 
+					/>))
 			 }			
 
 
